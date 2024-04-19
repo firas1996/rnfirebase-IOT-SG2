@@ -4,6 +4,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import "firebase/firestore";
 import firebase from "../Firebase";
 import { useNavigation } from "@react-navigation/native";
+let uid = "";
 const SignInScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,9 +17,10 @@ const SignInScreen = () => {
       .then((userCredential) => {
         // Signed in successfully
         const user = userCredential.user;
-        console.log("Signed in user:", user);
+        console.log("Signed in user:", user.uid);
+        uid = user.uid;
         setError(null);
-        navigation.navigate("Home");
+        navigation.navigate("Home", { uid: uid });
       })
       .catch((error) => {
         // Handle errors
