@@ -6,9 +6,29 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./Screens/HomeScreen";
 import AddArticle from "./Screens/AddArticle";
+import * as Location from "expo-location";
+import { useEffect } from "react";
 const Stack = createStackNavigator();
 
 export default function App() {
+  useEffect(() => {
+    (async () => {
+      console.log("ss");
+      try {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status != "granted") {
+          console.log("permission not granted");
+          return;
+        }
+        let position = await Location.getCurrentPositionAsync({
+          enableHighAccuracy: true,
+        });
+        console.log(position);
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+  }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator>
