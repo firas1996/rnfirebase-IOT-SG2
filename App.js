@@ -12,6 +12,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const [test, setTest] = useState(false);
+  const [myLocation, setMyLocation] = useState([]);
   useEffect(() => {
     (async () => {
       console.log("ss");
@@ -26,7 +27,8 @@ export default function App() {
             enableHighAccuracy: true,
           });
           setTest(!test);
-          console.log(position);
+          setMyLocation([position.coords.latitude, position.coords.longitude]);
+          console.log(myLocation);
         }, 5000);
       } catch (e) {
         console.log(e);

@@ -1,7 +1,13 @@
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  getDocs,
+} from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import firebase from "../Firebase";
 const dbh = getFirestore();
@@ -9,6 +15,7 @@ const AddArticle = () => {
   const params = useRoute();
   const [data, setData] = useState({ title: "", descreption: "" });
   const navigation = useNavigation();
+  const [abc, setAbc] = useState(false);
   const inputChangeHandler = (value, name) => {
     // console.log(value, name);
     setData((prevState) => {
@@ -26,6 +33,16 @@ const AddArticle = () => {
       console.error("Error adding document: ", e);
     }
   };
+  useEffect(() => {
+    setTimeout(async () => {
+      let requestData = query(collection(dbh, "Articles"));
+      let response = await getDocs(requestData);
+      response.forEach((item) => {
+        console.log(item.id, "  =>  ", item.data().owner);
+      });
+      setAbc(!abc);
+    }, 3000);
+  }, [abc]);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Add article</Text>
