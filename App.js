@@ -7,10 +7,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./Screens/HomeScreen";
 import AddArticle from "./Screens/AddArticle";
 import * as Location from "expo-location";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 const Stack = createStackNavigator();
 
 export default function App() {
+  const [test, setTest] = useState(false);
   useEffect(() => {
     (async () => {
       console.log("ss");
@@ -20,15 +21,18 @@ export default function App() {
           console.log("permission not granted");
           return;
         }
-        let position = await Location.getCurrentPositionAsync({
-          enableHighAccuracy: true,
-        });
-        console.log(position);
+        setTimeout(async () => {
+          let position = await Location.getCurrentPositionAsync({
+            enableHighAccuracy: true,
+          });
+          setTest(!test);
+          console.log(position);
+        }, 5000);
       } catch (e) {
         console.log(e);
       }
     })();
-  }, []);
+  }, [test]);
   return (
     <NavigationContainer>
       <Stack.Navigator>
